@@ -1,0 +1,27 @@
+{
+  "name": "hooks-store",
+  "version": "0.1.0",
+  "description": "React Hooks 数据控制轻量级解决方案",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hangyangws/hooks-store.git"
+  },
+  "keywords": [
+    "react",
+    "hooks",
+    "redux",
+    "mutiple",
+    "store",
+    "middleware"
+  ],
+  "author": "friday.fj",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/hangyangws/hooks-store/issues"
+  },
+  "homepage": "https://github.com/hangyangws/hooks-store#readme"
+}
