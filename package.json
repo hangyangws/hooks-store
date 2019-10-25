@@ -4,7 +4,8 @@
   "description": "React Hooks 数据控制轻量级解决方案",
   "main": "src/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc"
   },
   "repository": {
     "type": "git",
@@ -23,5 +24,12 @@
   "bugs": {
     "url": "https://github.com/hangyangws/hooks-store/issues"
   },
-  "homepage": "https://github.com/hangyangws/hooks-store#readme"
+  "homepage": "https://github.com/hangyangws/hooks-store#readme",
+  "devDependencies": {
+    "typescript": "^3.6.4"
+  },
+  "dependencies": {
+    "@types/react": "^16.9.10",
+    "react": "^16.11.0"
+  }
 }
