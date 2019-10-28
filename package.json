@@ -1,7 +1,7 @@
 {
   "name": "hooks-store",
   "version": "0.1.0",
-  "description": "React Hooks 数据控制轻量级解决方案",
+  "description": "hooks-store React Hooks 数据控制轻量级解决方案",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "scripts": {
@@ -21,7 +21,7 @@
     "global store",
     "middleware"
   ],
-  "author": "friday.fj",
+  "author": "friday-fj",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/hangyangws/hooks-store/issues"
