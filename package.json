@@ -2,10 +2,12 @@
   "name": "hooks-store",
   "version": "0.1.0",
   "description": "React Hooks 数据控制轻量级解决方案",
-  "main": "src/index.js",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "tsc"
+    "test": "jest",
+    "build": "rm -rf ./lib && tsc",
+    "prepublishOnly": "npm run test && npm run build"
   },
   "repository": {
     "type": "git",
@@ -14,9 +16,9 @@
   "keywords": [
     "react",
     "hooks",
-    "redux",
-    "mutiple",
-    "store",
+    "redux like",
+    "mutiple store",
+    "global store",
     "middleware"
   ],
   "author": "friday.fj",
@@ -26,10 +28,20 @@
   },
   "homepage": "https://github.com/hangyangws/hooks-store#readme",
   "devDependencies": {
+    "@types/enzyme": "^3.10.3",
+    "@types/enzyme-adapter-react-16": "^1.0.5",
+    "@types/jest": "^24.0.20",
+    "@types/react": "^16.9.10",
+    "enzyme": "^3.10.0",
+    "enzyme-adapter-react-16": "^1.15.1",
+    "jest": "^24.9.0",
+    "react": "^16.11.0",
+    "react-dom": "^16.11.0",
+    "ts-jest": "^24.1.0",
     "typescript": "^3.6.4"
   },
-  "dependencies": {
-    "@types/react": "^16.9.10",
-    "react": "^16.11.0"
+  "peerDependencies": {
+    "react": "^16.8.0",
+    "react-dom": "^16.8.0"
   }
 }
