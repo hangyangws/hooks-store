@@ -1,7 +1,7 @@
 {
   "name": "hooks-store",
   "version": "0.1.0",
-  "description": "hooks-store React Hooks 数据控制轻量级解决方案",
+  "description": "The mutiple stores management for React APP by Hooks; 使用 Hooks 给 React 应用提供多 store 全局数据管理方案",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "scripts": {
@@ -16,9 +16,12 @@
   "keywords": [
     "react",
     "hooks",
-    "redux like",
+    "react hooks",
+    "redux",
     "mutiple store",
     "global store",
+    "state",
+    "state management",
     "middleware"
   ],
   "author": "friday-fj",
