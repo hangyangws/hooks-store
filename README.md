@@ -27,7 +27,7 @@ TL;DR
 `hooks-store` 是使用 [React Hooks](https://zh-hans.reactjs.org/docs/hooks-intro.html) 给 React 应用提供多 store 全局数据管理方案的一种实现，使用方式上与 [Redux](https://github.com/reduxjs/redux) 类似。  
 这一切的实现得益于 React Hooks 16.8 以后推出的两个 hooks：[useReducer](https://zh-hans.reactjs.org/docs/hooks-reference.html#usereducer)、[useContext](https://zh-hans.reactjs.org/docs/hooks-reference.html?#usecontext)。
 
-在 hooks 问世之前，我尝试过使用 [Context.Provider](https://zh-hans.reactjs.org/docs/context.html#contextprovider) 配合 [Context.Consumer][https://zh-hans.reactjs.org/docs/context.html#contextconsumer] 以 [render props](https://zh-hans.reactjs.org/docs/render-props.html) 的方式实现全局数据管理。  
+在 hooks 问世之前，我尝试过使用 [Context.Provider](https://zh-hans.reactjs.org/docs/context.html#contextprovider) 配合 [Context.Consumer](https://zh-hans.reactjs.org/docs/context.html#contextconsumer) 以 [render props](https://zh-hans.reactjs.org/docs/render-props.html) 的方式实现全局数据管理。  
 当然在实践中遇到很多弊端，所以也没有继续。
 
 [useReducer](https://zh-hans.reactjs.org/docs/hooks-reference.html#usereducer) 和 [useContext](https://zh-hans.reactjs.org/docs/hooks-reference.html?#usecontext) 的出现，足足让我开心了一整天。  
@@ -251,8 +251,8 @@ export default App;
 
 ## DEMO
 
-- 在线 demo - [simple-todolist](https://codesandbox.io/s/silly-framework-byc3w)
-- 使用 typescript 写的 todoList - [typescript-todo-list](https://github.com/hangyangws/react-todo-list)
+- 在线 demo：[simple-todolist](https://codesandbox.io/s/silly-framework-byc3w)
+- 使用 typescript 写的 todoList：[typescript-todo-list](https://github.com/hangyangws/react-todo-list)
 
 ## API
 
