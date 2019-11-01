@@ -4,7 +4,7 @@
 
 > The mutiple stores management for React APP by Hooks
 
-语言选择：[中文](https://github.com/hangyangws/hooks-store/blob/master/README.md)
+**语言选择**：[中文](https://github.com/hangyangws/hooks-store#hooks-store)
 
 ---
 
