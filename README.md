@@ -25,17 +25,17 @@
 TL;DR
 
 `hooks-store` 是使用 [React Hooks](https://zh-hans.reactjs.org/docs/hooks-intro.html) 给 React 应用提供多 store 全局数据管理方案的一种实现，使用方式上与 [Redux](https://github.com/reduxjs/redux) 类似。  
-这一切的实现得益于 React Hooks 16.8 以后推出的两个 hooks：useReducer、useContext。
+这一切的实现得益于 React Hooks 16.8 以后推出的两个 hooks：[useReducer](https://zh-hans.reactjs.org/docs/hooks-reference.html#usereducer)、[useContext](https://zh-hans.reactjs.org/docs/hooks-reference.html?#usecontext)。
 
-在 hooks 问世之前，我尝试过使用 Context.Provider 配合 Context.Consumer 以 render props 的方式实现全局数据管理。  
+在 hooks 问世之前，我尝试过使用 [Context.Provider](https://zh-hans.reactjs.org/docs/context.html#contextprovider) 配合 [Context.Consumer][https://zh-hans.reactjs.org/docs/context.html#contextconsumer] 以 [render props](https://zh-hans.reactjs.org/docs/render-props.html) 的方式实现全局数据管理。  
 当然在实践中遇到很多弊端，所以也没有继续。
 
-useReducer 和 useContext 的出现，足足让我开心了一整天。  
+[useReducer](https://zh-hans.reactjs.org/docs/hooks-reference.html#usereducer) 和 [useContext](https://zh-hans.reactjs.org/docs/hooks-reference.html?#usecontext) 的出现，足足让我开心了一整天。  
 它带来了与 Redux 类似的体验：store、dispatch、reducer。
 
 我开始基于 hooks 实践数据管理模式，然后很容地发现了三个问题：
 1. middleware「中间件」还没有优雅的实现方案
-2. 如何实现 **多 store**, 以便方便数据管理
+2. 如何实现多 store, 以便方便数据管理
 3. 使用方式并不简单，且需要一定的理解成本
 
 前期，我自以为实现了一个「完美」的方案：[使用 React Hooks 代替 Redux](https://zhuanlan.zhihu.com/p/66020264)。  
@@ -259,7 +259,7 @@ export default App;
 ### Provider
 
 Provider 作为整个 APP 的父元素。  
-注：如果是 typescript 项目，需要范形传递开发者自定义的 State, Action。
+注：如果是 typescript 项目，需要传递开发者自定义的 State, Action 范形。
 
 ```typescript
 const Provider: <State, Action>(props: ProviderProps<State, Action>) => JSX.Element
@@ -292,11 +292,11 @@ interface Store<State, Action> {
 - middleware
 
 中间件作为一个函数，每一个 action 的发送都会经过中间件。
-中间件函数接收一个有三个参数的对象：
+中间件函数接收有三个字段的对象：
 
 1. next：action 分发者
 2. action：当前触发的 action
-3. state：当前的数据。注：是所有 store 的数据，而不是某一个 store 的数据，因此可以在中间件中根据全局 store 作出逻辑哦判断，再进一步操作
+3. state：全局 store 的数据。注：是所有 store 的数据，而不是某一个 store 的数据，因此可以在中间件中根据全局 store 作出逻辑判断，再进行下一步操作
 
 ```typescript
 type Middleware<Action> = ({ next, action, state }: {
@@ -342,7 +342,7 @@ function useStore<State>(nameSpace?: string): State;
 
 ### 1. State
 
-State 告诉 hooks-store 项目的数据是什么样子。  
+State 告诉 hooks-store，你的项目的数据是什么样子。  
 比如：
 
 ```ts
@@ -365,7 +365,7 @@ export type State = StateOne | StateTwo;
 
 ### 2. Action
 
-Action 则告诉 hooks-store 项目总可能发触发什么样的 action，以便检识别出错误的 action。
+Action 则告诉 hooks-store，你的项目中可能发触发什么样的 action，以便检识别出错误的 action。
 
 比如：
 
