@@ -1,6 +1,8 @@
 # hooks-store
 
-[![](https://img.shields.io/badge/React-≥16.8.0-brightgreen.svg)](https://reactjs.org/docs/hooks-intro.html) [![Build Status](https://travis-ci.com/hangyangws/hooks-store.svg?branch=master)](https://travis-ci.com/hangyangws/hooks-store)
+[![](https://img.shields.io/badge/React-≥16.8.0-yellow.svg)](https://reactjs.org/docs/hooks-intro.html)
+[![Build Status](https://travis-ci.com/hangyangws/hooks-store.svg?branch=master)](https://travis-ci.com/hangyangws/hooks-store)
+[![npm downloads](https://img.shields.io/npm/dm/hooks-store)](https://www.npmjs.com/package/hooks-store)
 
 **Language switching**：[English](https://github.com/hangyangws/hooks-store/blob/master/README.en.md)
 
@@ -72,7 +74,7 @@ import storeList from './storeList';
 import middlewaras from './middlewares';
 import App from './App';
 
-const Root = document.getElementById('Root');
+const Root = document.getElementById('root');
 
 // 使用 Provider 作为整个应用的父组件
 // 给 Provider 提供 stores、middlewares 参数
@@ -87,7 +89,7 @@ ReactDOM.render(
 ### 数据中心
 
 ```jsx
-/* storeList.jsx */
+/* storeList.js */
 
 // 为了方便，这里把两个 store 写在一个文件里面。实际开发中，不建议这样做。
 
@@ -146,7 +148,7 @@ export default storeList;
 ### middlewara「中间件」
 
 ```jsx
-/* middlewares.jsx */
+/* middlewares.js */
 
 // 第一个 middleware：
 // 用来拦截 API 请求
