@@ -17,18 +17,17 @@ export const getComdbinedReducer = <State, Action>(
   let index = 0;
 
   while (index < stores.length) {
-    const currentStore = stores[index];
+    const currentStore = stores[index++];
     const currentState = state[currentStore.name];
     const nextCurrentState = currentStore.reducer(currentState, action);
 
-    if (nextCurrentState) {
+    // nextCurrentState 为 null 或者 undefined 表示没有进行数据处理
+    if (nextCurrentState != null) {
       return {
         ...state,
         [currentStore.name]: nextCurrentState
       };
     }
-
-    index++;
   }
 
   return state;

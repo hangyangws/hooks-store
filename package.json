@@ -5,9 +5,8 @@
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "scripts": {
-    "start": "react-scripts start",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
+    "start": "webpack-dev-server --open",
+    "test": "jest",
     "build": "rm -rf ./lib && tsc",
     "prepublishOnly": "npm run test && npm run build"
   },
@@ -33,15 +32,28 @@
   },
   "homepage": "https://github.com/hangyangws/hooks-store#readme",
   "devDependencies": {
+    "@babel/cli": "^7.6.4",
+    "@babel/core": "^7.6.4",
+    "@babel/plugin-external-helpers": "^7.2.0",
+    "@babel/plugin-proposal-object-rest-spread": "^7.6.2",
+    "@babel/preset-env": "^7.6.3",
+    "@babel/preset-react": "^7.6.3",
+    "@babel/preset-typescript": "^7.6.0",
+    "@babel/runtime": "^7.6.3",
     "@types/jest": "^24.0.20",
     "@types/react": "^16.9.10",
+    "babel-loader": "^8.0.6",
+    "core-js": "^3.3.6",
+    "html-webpack-plugin": "^3.2.0",
     "immutable": "^4.0.0-rc.12",
     "jest": "^24.9.0",
     "react": "^16.11.0",
     "react-dom": "^16.11.0",
-    "react-scripts": "^3.2.0",
     "ts-jest": "^24.1.0",
-    "typescript": "^3.6.4"
+    "typescript": "^3.6.4",
+    "webpack": "^4.41.2",
+    "webpack-cli": "^3.3.10",
+    "webpack-dev-server": "^3.9.0"
   },
   "peerDependencies": {
     "react": "^16.8.0",

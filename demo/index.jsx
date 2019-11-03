@@ -1,10 +1,13 @@
 import React from "react";
 import ReactDOM from "react-dom";
 
-import Provider from "../../src/index";
+import Provider from "../src/index";
 import storeList from "./storeList";
 import middlewaras from "./middlewares";
 import App from "./App";
+
+import 'core-js/stable';
+import 'regenerator-runtime/runtime';
 
 const Root = document.getElementById("root");
 

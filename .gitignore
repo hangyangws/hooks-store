@@ -3,6 +3,7 @@
 # Edit at https://www.gitignore.io/?templates=node,macos
 
 /lib
+/build
 
 ### macOS ###
 # General

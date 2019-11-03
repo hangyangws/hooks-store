@@ -26,7 +26,7 @@ const apiFetch = async ({ next, action }) => {
             createTime: 1561219200000
           }
         ]);
-      }, 3000);
+      }, 1000);
     });
 
     // 数据请求后，关闭全局通知 loading 状态
@@ -55,6 +55,6 @@ const actionLog = ({ next, action, state }) => {
   next(action);
 };
 
-const middlewaras = [apiFetch];
+const middlewaras = [actionLog, apiFetch];
 
 export default middlewaras;

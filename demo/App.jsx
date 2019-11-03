@@ -1,5 +1,5 @@
 import React from "react";
-import { useStore, useDispatch } from "hooks-store";
+import { useStore, useDispatch } from "../src/index";
 
 const Loading = () => {
   // 使用 useStore 方法得到对应的 state 数据
@@ -30,11 +30,17 @@ const TodoList = () => {
     };
   }, []);
 
+  const handleDelete = (todo) => () => {
+    dispatch({
+      type: 'TODOLIST_DELETE',
+      payload: todo
+    });
+  };
+
   return (
     <ul>
-
       {todoList.data.map(todo => (
-        <li key={todo.id}>{todo.text}</li>
+        <li key={todo.id} onClick={handleDelete(todo)}>{todo.text}</li>
       ))}
     </ul>
   );

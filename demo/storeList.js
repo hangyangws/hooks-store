@@ -30,6 +30,11 @@ const todolistReducer = (state, action) => {
   switch (action.type) {
     case "TODOLIST_INIT": // 数据初始化
       return setIn(state, ["data"], action.payload);
+    case "TODOLIST_DELETE": // 删除数据
+    const newTodolist = state.data.filter(
+      todo => todo.id !== action.payload.id
+    );
+    return setIn(state, ['data'], newTodolist);
     case "TODOLIST_CLEAR": // 数据清空
       return setIn(state, ["data"], []);
   }
