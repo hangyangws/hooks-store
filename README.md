@@ -46,9 +46,9 @@ TL;DR
 直到现在我也很喜欢这种设计思路，但是基于项目开发的时候，它暴露出一个弊端：不同 store 之间不能共享数据，并且不方便实现 middlewara「中间件」的逻辑等等。
 
 然后，在反复推敲后和实验后，我找到一个新的实践模式：  
-只使用一个 Provider 实现多 store 的方案。
+只使用一个 Provider 就能实现多 store 的方案。
 
-我为这版的新的数据管理抽离了 npm 包，诞生了现在的 hooks-store。  
+我为这个版本的数据管理方案抽离了 npm 包，诞生了现在的 [hooks-store](https://www.npmjs.com/package/hooks-store)。  
 从原理和实现上，反而变得简单，并且消除我之前遇到的所有问题。
 
 ## 安装
@@ -66,18 +66,20 @@ TL;DR
 ```jsx
 /* index.jsx */
 
-import React from 'react';
-import ReactDOM from 'react-dom';
-import Provider from 'hooks-store';
+import React from "react";
+import ReactDOM from "react-dom";
+import Provider from "hooks-store";
 
-import storeList from './storeList';
-import middlewaras from './middlewares';
-import App from './App';
+import storeList from "./storeList";
+import middlewaras from "./middlewares";
+import App from "./App";
 
-const Root = document.getElementById('root');
+// 建议项目中使用如下依赖
+import 'core-js/stable';
+import 'regenerator-runtime/runtime';
 
-// 使用 Provider 作为整个应用的父组件
-// 给 Provider 提供 stores、middlewares 参数
+const Root = document.getElementById("root");
+
 ReactDOM.render(
   <Provider stores={storeList} middlewares={middlewaras}>
     <App />
@@ -199,43 +201,49 @@ export default middlewaras;
 ```jsx
 /* App.jsx */
 
-import React from 'react';
-import { useStore, useDispatch } from 'hooks-store';
+import React from "react";
+import { useStore, useDispatch } from "hooks-store";
 
 const Loading = () => {
   // 使用 useStore 方法得到对应的 state 数据
-  const { loading } = useStore('notice');
+  const { loading } = useStore("notice");
 
-  return loading ? '加载中...' : null;
+  return loading ? "加载中..." : null;
 };
 
 const TodoList = () => {
   // 使用 useDispatch 的方法得到 dispatch，用来发送 action
   const dispatch = useDispatch();
-  const todoList = useStore('todolist');
+  const todoList = useStore("todolist");
 
   React.useEffect(() => {
     // 组件挂载的时候开始请求数据
     dispatch({
-      type: 'TODOLIST_INIT',
+      type: "TODOLIST_INIT",
       api: {
-        url: '/todolist'
+        url: "/todolist"
       }
     });
 
     return () => {
       // 组件卸载的时候清空数据
       dispatch({
-        type: 'TODOLIST_CLEAR'
+        type: "TODOLIST_CLEAR"
       });
     };
   }, []);
 
+  const handleDelete = (todo) => () => {
+    dispatch({
+      type: 'TODOLIST_DELETE',
+      payload: todo
+    });
+  };
+
   return (
     <ul>
-      {!todoList.data.length && <li>没有数据</li>}
       {todoList.data.map(todo => (
-        <li key={todo.id}>{todo.text}</li>
+        <li key={todo.id} onClick={handleDelete(todo)}>{todo.text}</li>
       ))}
     </ul>
   );
@@ -253,8 +261,10 @@ export default App;
 
 ## DEMO
 
-- 在线 demo：[simple-todolist](https://codesandbox.io/s/silly-framework-byc3w)
-- 使用 typescript 写的 todoList：[typescript-todo-list](https://github.com/hangyangws/react-todo-list)
+- **codesandbox 项目**：[simple-todolist](https://codesandbox.io/s/silly-framework-byc3w)  
+  基于 hooks-store 编写的简单版 todolist
+- **github 项目**：[typescript-todo-list](https://github.com/hangyangws/react-todo-list)  
+  基于 hooks-store 配合 typescript 写的 todoList 项目
 
 ## API
 
@@ -281,7 +291,10 @@ interface ProviderProps<State, Action> {
 
 - Store
 
-每一个 store 作为一个数据仓库，包含 name「唯一的名称」、initialState「初始化数据，可以是任何非 false 类型」、reducer「数据出处理中心」
+每一个 store 作为一个数据仓库，包含：  
+1. name「唯一的名称」
+2. initialState「初始化数据，可以是任何非 false 类型」
+3. reducer「数据出处理中心」
 
 ```typescript
 interface Store<State, Action> {
@@ -293,10 +306,10 @@ interface Store<State, Action> {
 
 - middleware
 
-中间件作为一个函数，每一个 action 的发送都会经过中间件。
+中间件作为一个函数，每一个 `dispatch(action)` 的发送都会经过中间件。
 中间件函数接收有三个字段的对象：
 
-1. next：action 分发者
+1. next： 下一个中间件动作分发者。如果已经是最后一个则分发到 reducer
 2. action：当前触发的 action
 3. state：全局 store 的数据。注：是所有 store 的数据，而不是某一个 store 的数据，因此可以在中间件中根据全局 store 作出逻辑判断，再进行下一步操作
 
@@ -312,7 +325,7 @@ type Middleware<Action> = ({ next, action, state }: {
 
 Reducer 作为数据处理器，接收 state「当前 store 的数据」、action「当前触发的 action」；  
 返回一个新的 state，或者什么都不返回。  
-注意：这里的 Reducer 和 Redux 的 reducer 不一样：如果 state 没有修改，则不需要返回原来的 state。
+注意：这里的 Reducer 和 Redux 的 reducer 不一样：如果 state 没有修改，则不需要返回原来的 state，或者返回 undeinfed。
 
 ```typescript
 type Reducer<State, Action> = (state: State, action: Action) => State | undefined;
