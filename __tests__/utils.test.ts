@@ -1,4 +1,4 @@
-import { getInitialState } from "./utils";
+import { getInitialState } from "../src/utils";
 
 test('correct get initial state', () => {
   expect(getInitialState([{
