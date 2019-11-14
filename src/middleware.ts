@@ -17,7 +17,7 @@ export const applyMiddleware = <Action>(
       return;
     }
 
-    middlewares[index]({ next, action, state })
+    middlewares[index]({ next, action, state });
   };
 
   return (action: Action) => {
