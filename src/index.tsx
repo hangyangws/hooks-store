@@ -4,7 +4,7 @@ import { StoreData, ProviderProps, DispatchCtxType } from './types';
 import { getInitialState, getComdbinedReducer } from './utils';
 import { applyMiddleware } from './middleware';
 
-let storeCxt: React.Context<StoreData>;
+let storeCtx: React.Context<StoreData>;
 let dispatchCtx: DispatchCtxType<any>;
 
 const Provider = <State, Action>(props: ProviderProps<State, Action>) => {
@@ -13,7 +13,7 @@ const Provider = <State, Action>(props: ProviderProps<State, Action>) => {
     [props.stores]
   );
 
-  storeCxt = React.useMemo(() => React.createContext<StoreData>(initialState), [
+  storeCtx = React.useMemo(() => React.createContext<StoreData>(initialState), [
     initialState
   ]);
   dispatchCtx = React.useMemo(
@@ -36,7 +36,7 @@ const Provider = <State, Action>(props: ProviderProps<State, Action>) => {
 
   return (
     <dispatchCtx.Provider value={enhancedDispatch}>
-      <storeCxt.Provider value={state}>{props.children}</storeCxt.Provider>
+      <storeCtx.Provider value={state}>{props.children}</storeCtx.Provider>
     </dispatchCtx.Provider>
   );
 };
@@ -46,7 +46,7 @@ export function useDispatch<Action>() {
 }
 
 export function useStore<State>(nameSpace?: string) {
-  const store = React.useContext(storeCxt);
+  const store = React.useContext(storeCtx);
   const state: State = nameSpace ? store[nameSpace] : store;
 
   return state;
