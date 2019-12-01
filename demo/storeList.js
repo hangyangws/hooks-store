@@ -17,6 +17,8 @@ const noticeReducer = (state, action) => {
       return setIn(state, ["loading"], true);
     case "LOADING_STOP": // 加载结束
       return setIn(state, ["loading"], false);
+    default:
+      return state;
   }
 };
 
@@ -37,6 +39,8 @@ const todolistReducer = (state, action) => {
     return setIn(state, ['data'], newTodolist);
     case "TODOLIST_CLEAR": // 数据清空
       return setIn(state, ["data"], []);
+    default:
+        return state;
   }
 };
 

@@ -105,13 +105,14 @@ const noticeInitialState = {
   loading: false
 };
 
-// 注意：reducer 的 switch 不需要 default return
 const noticeReducer = (state, action) => {
   switch (action.type) {
     case 'LOADING_START': // 加载开始
       return setIn(state, ['loading'], true);
     case 'LOADING_STOP': // 加载结束
       return setIn(state, ['loading'], false);
+    default:
+      return state;
   }
 };
 
@@ -127,6 +128,8 @@ const todolistReducer = (state, action) => {
       return setIn(state, ['data'], action.payload);
     case 'TODOLIST_CLEAR': // 数据清空
       return setIn(state, ['data'], []);
+    default:
+      return state;
   }
 };
 

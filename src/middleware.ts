@@ -7,21 +7,18 @@ export const applyMiddleware = <Action>(
   dispatch: React.Dispatch<Action>,
   middlewares: Middleware<Action>[]
 ) => {
-  let index: number;
-
-  const next = (action: Action) => {
-    index++;
-
+  // in the same middleware three should be the shame next function
+  // so there must cache the index of current
+  const executeMiddleware = (index: number) => (action: Action) => {
     if (index >= middlewares.length) {
       dispatch(action);
       return;
     }
 
-    middlewares[index]({ next, action, state });
+    middlewares[index]({ next: executeMiddleware(index + 1), action, state });
   };
 
   return (action: Action) => {
-    index = 0;
-    middlewares[0]({ next, action, state });
+    middlewares[0]({ next: executeMiddleware(1), action, state });
   };
 };
