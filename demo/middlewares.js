@@ -49,12 +49,16 @@ const apiFetch = async ({ next, action }) => {
 // 第二个 middleware：
 // 用来打印日志
 const actionLog = ({ next, action, state }) => {
-  console.log("发出 action：", action);
-  console.log("当前数据状态是：", state);
+  const log = {
+    action,
+    state
+  };
+
+  console.table(log);
 
   next(action);
 };
 
-const middlewaras = [actionLog, apiFetch];
+const middlewaras = [apiFetch, actionLog];
 
 export default middlewaras;
