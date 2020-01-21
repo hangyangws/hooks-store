@@ -1,6 +1,6 @@
 {
   "name": "hooks-store",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "The mutiple stores management for React APP by Hooks; 使用 Hooks 给 React 应用提供多 store 全局数据管理方案",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
