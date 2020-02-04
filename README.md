@@ -13,7 +13,7 @@
 - [使用](https://github.com/hangyangws/hooks-store#使用)
   - [顶层容器](https://github.com/hangyangws/hooks-store#顶层容器)
   - [数据中心](https://github.com/hangyangws/hooks-store#数据中心)
-  - [middlewara「中间件」](https://github.com/hangyangws/hooks-store#middlewara中间件)
+  - [middleware「中间件」](https://github.com/hangyangws/hooks-store#middleware中间件)
   - [子组件](https://github.com/hangyangws/hooks-store#子组件)
 - [Demo](https://github.com/hangyangws/hooks-store#demo)
 - [API](https://github.com/hangyangws/hooks-store#api)
@@ -43,7 +43,7 @@ TL;DR
 前期，我自以为实现了一个「完美」的方案：[使用 React Hooks 代替 Redux](https://zhuanlan.zhihu.com/p/66020264)。  
 在这个方案里面，我使用多个 Provider 和多个 Context 实现了多 store 的方案。  
 而且，我为这样的多 store 方案找到了优雅的 [整合模式](https://github.com/facebook/react/issues/14520)。  
-直到现在我也很喜欢这种设计思路，但是基于项目开发的时候，它暴露出一个弊端：不同 store 之间不能共享数据，并且不方便实现 middlewara「中间件」的逻辑等等。
+直到现在我也很喜欢这种设计思路，但是基于项目开发的时候，它暴露出一个弊端：不同 store 之间不能共享数据，并且不方便实现 middleware「中间件」的逻辑等等。
 
 然后，在反复推敲后和实验后，我找到一个新的实践模式：  
 只使用一个 Provider 就能实现多 store 的方案。
@@ -71,7 +71,7 @@ import ReactDOM from "react-dom";
 import Provider from "hooks-store";
 
 import storeList from "./storeList";
-import middlewaras from "./middlewares";
+import middlewares from "./middlewares";
 import App from "./App";
 
 // 建议项目中使用如下依赖
@@ -81,7 +81,7 @@ import 'regenerator-runtime/runtime';
 const Root = document.getElementById("root");
 
 ReactDOM.render(
-  <Provider stores={storeList} middlewares={middlewaras}>
+  <Provider stores={storeList} middlewares={middlewares}>
     <App />
   </Provider>,
   Root
@@ -150,7 +150,7 @@ const storeList = [todolistStore, noticeStore];
 export default storeList;
 ```
 
-### middlewara「中间件」
+### middleware「中间件」
 
 ```jsx
 /* middlewares.js */
@@ -194,9 +194,9 @@ const actionLog = ({ next, action, state }) => {
   next(action);
 };
 
-const middlewaras = [actionLog, apiFetch];
+const middlewares = [actionLog, apiFetch];
 
-export default middlewaras;
+export default middlewares;
 ```
 
 ### 子组件
