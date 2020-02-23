@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { StoreData, ProviderProps, DispatchCtxType } from './types';
+import { StoreData, ProviderProps, DispatchCtxType, Middleware } from './types';
 import { getInitialState, getComdbinedReducer } from './utils';
 import { applyMiddleware } from './middleware';
 
@@ -51,5 +51,63 @@ export function useStore<State>(nameSpace?: string) {
 
   return state;
 }
+
+// ----------------------------------------------------------------------
+
+// TODO: add dispatch type
+interface HookProviderProps {
+  value: [StoreData, any];
+  children: JSX.Element[] | JSX.Element | React.ReactNode;
+}
+
+let hookStoreCtx: React.Context<[StoreData, any]>;
+
+// use a more hook&redux-like method to create store
+// state can be used combineReducer method in somewhere else
+// middlewares are optional
+export const createHookStore = <State, Action>(
+  reducer: (state: StoreData, action: Action) => StoreData,
+  initialState: State,
+  middlewares?: Middleware<Action>[]
+) => {
+  const [state, dispatch] = React.useReducer(reducer, initialState);
+
+  const enhancedDispatch =
+    middlewares && middlewares.length
+      ? applyMiddleware(state, dispatch, middlewares)
+      : dispatch;
+
+  return [state, enhancedDispatch];
+};
+
+// can pass both state, and dispatch(with middleware) as one param to context provider, no need use two context
+export const HookStoreProvider = (props: HookProviderProps) => {
+  const [state, dispatch] = props.value;
+
+  hookStoreCtx = React.useMemo(
+    () => React.createContext<[StoreData, any]>([state, dispatch]),
+    [state]
+  );
+
+  return (
+    <hookStoreCtx.Provider value={[state, dispatch]}>
+      {props.children}
+    </hookStoreCtx.Provider>
+  );
+};
+
+export function useHookDispatch() {
+  const [, dispatch] = React.useContext(hookStoreCtx);
+  return dispatch;
+}
+
+// maybe a callback like redux?
+export function useHookStore<State>(selector: (state: StoreData) => any) {
+  const [store] = React.useContext(hookStoreCtx);
+
+  return selector(store);
+}
+
+// ----------------------------------------------------------------------
 
 export default Provider;
