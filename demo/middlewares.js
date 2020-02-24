@@ -59,6 +59,6 @@ const actionLog = ({ next, action, state }) => {
   next(action);
 };
 
-const middlewaras = [apiFetch, actionLog];
+const middlewares = [apiFetch, actionLog];
 
-export default middlewaras;
+export default middlewares;
