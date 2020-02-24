@@ -24,6 +24,12 @@
 
 ## Preface
 
+---
+
+document translate is in progress...
+
+---
+
 TL;DR
 
 `hooks-store` is an implementation of using [React Hooks](https://zh-hans.reactjs.org/docs/hooks-intro.html) to provide the React SPA with multiple store global data management solutions. Its usage is similar to that of [Redux](https://github.com/reduxjs/redux).  
