@@ -9,18 +9,18 @@
 ## catalogue
 
 - [Foreword](https://github.com/hangyangws/hooks-store/blob/master/README.en.md#foreword)
-- [Installation](https://github.com/hangyangws/hooks-store/blob/master/README.en.md##installation)
-- [Usege](https://github.com/hangyangws/hooks-store/blob/master/README.en.md##usege)
-  - [Global Provider](https://github.com/hangyangws/hooks-store/blob/master/README.en.md##global-provider)
-  - [Data Center](https://github.com/hangyangws/hooks-store/blob/master/README.en.md##data-center)
-  - [middleware](https://github.com/hangyangws/hooks-store/blob/master/README.en.md##middleware)
-  - [Child Components](https://github.com/hangyangws/hooks-store/blob/master/README.en.md##child-components)
-- [Demo](https://github.com/hangyangws/hooks-store/blob/master/README.en.md##demo)
-- [API](https://github.com/hangyangws/hooks-store/blob/master/README.en.md##api)
-  - [Provider](https://github.com/hangyangws/hooks-store/blob/master/README.en.md##provider)
-  - [useDispatch](https://github.com/hangyangws/hooks-store/blob/master/README.en.md##usedispatch)
-  - [useStore](https://github.com/hangyangws/hooks-store/blob/master/README.en.md##usestore)
-- [The Typescript](https://github.com/hangyangws/hooks-store/blob/master/README.en.md##the-typescript)
+- [Installation](https://github.com/hangyangws/hooks-store/blob/master/README.en.md#installation)
+- [Usege](https://github.com/hangyangws/hooks-store/blob/master/README.en.md#usege)
+  - [Global Provider](https://github.com/hangyangws/hooks-store/blob/master/README.en.md#global-provider)
+  - [Data Center](https://github.com/hangyangws/hooks-store/blob/master/README.en.md#data-center)
+  - [middleware](https://github.com/hangyangws/hooks-store/blob/master/README.en.md#middleware)
+  - [Child Components](https://github.com/hangyangws/hooks-store/blob/master/README.en.md#child-components)
+- [Demo](https://github.com/hangyangws/hooks-store/blob/master/README.en.md#demo)
+- [API](https://github.com/hangyangws/hooks-store/blob/master/README.en.md#api)
+  - [Provider](https://github.com/hangyangws/hooks-store/blob/master/README.en.md#provider)
+  - [useDispatch](https://github.com/hangyangws/hooks-store/blob/master/README.en.md#usedispatch)
+  - [useStore](https://github.com/hangyangws/hooks-store/blob/master/README.en.md#usestore)
+- [The Typescript](https://github.com/hangyangws/hooks-store/blob/master/README.en.md#the-typescript)
 
 ## Foreword
 
