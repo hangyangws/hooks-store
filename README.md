@@ -32,10 +32,10 @@ TL;DR
 在 hooks 问世之前，我尝试过使用 [Context.Provider](https://zh-hans.reactjs.org/docs/context.html#contextprovider) 配合 [Context.Consumer](https://zh-hans.reactjs.org/docs/context.html#contextconsumer) 以 [render props](https://zh-hans.reactjs.org/docs/render-props.html) 的方式实现全局数据管理。  
 当然在实践中遇到很多弊端，所以也没有继续。
 
-[useReducer](https://zh-hans.reactjs.org/docs/hooks-reference.html#usereducer) 和 [useContext](https://zh-hans.reactjs.org/docs/hooks-reference.html?#usecontext) 的出现，足足让我开心了一整天。  
-它带来了与 Redux 类似的体验：store、dispatch、reducer。
+[useReducer](https://zh-hans.reactjs.org/docs/hooks-reference.html#usereducer) 和 [useContext](https://zh-hans.reactjs.org/docs/hooks-reference.html?#usecontext) 的出现，来了与 Redux 类似的体验：store、dispatch、reducer。
 
 我开始基于 hooks 实践数据管理模式，然后很容地发现了三个问题：
+
 1. middleware「中间件」还没有优雅的实现方案
 2. 如何实现多 store, 以便方便数据管理
 3. 使用方式并不简单，且需要一定的理解成本
@@ -75,8 +75,8 @@ import middlewares from "./middlewares";
 import App from "./App";
 
 // 建议项目中使用如下依赖
-import 'core-js/stable';
-import 'regenerator-runtime/runtime';
+import "core-js/stable";
+import "regenerator-runtime/runtime";
 
 const Root = document.getElementById("root");
 
@@ -93,11 +93,6 @@ ReactDOM.render(
 ```jsx
 /* storeList.js */
 
-// 为了方便，这里把两个 store 写在一个文件里面。实际开发中，不建议这样做。
-
-// 使用 immutable 的 setIn 方法
-import { setIn } from 'immutable';
-
 // 第一个 Store：
 // 管理全局通知状态，类似于是否出去加载中。
 
@@ -107,10 +102,16 @@ const noticeInitialState = {
 
 const noticeReducer = (state, action) => {
   switch (action.type) {
-    case 'LOADING_START': // 加载开始
-      return setIn(state, ['loading'], true);
-    case 'LOADING_STOP': // 加载结束
-      return setIn(state, ['loading'], false);
+    case "LOADING_START":
+      return {
+        ...state,
+        loading: true
+      };
+    case "LOADING_STOP":
+      return {
+        ...state,
+        loading: false
+      };
     default:
       return state;
   }
@@ -124,23 +125,29 @@ const todolistInitialState = {
 
 const todolistReducer = (state, action) => {
   switch (action.type) {
-    case 'TODOLIST_INIT': // 数据初始化
-      return setIn(state, ['data'], action.payload);
-    case 'TODOLIST_CLEAR': // 数据清空
-      return setIn(state, ['data'], []);
+    case "TODOLIST_INIT":
+      return {
+        ...state,
+        data: action.payload
+      };
+    case "TODOLIST_DELETE":
+      return {
+        ...state,
+        data: state.date.filter(item => item !== action.payload)
+      };
     default:
       return state;
   }
 };
 
 const noticeStore = {
-  name: 'notice',
+  name: "notice",
   initialState: noticeInitialState,
   reducer: noticeReducer
 };
 
 const todolistStore = {
-  name: 'todolist',
+  name: "todolist",
   initialState: todolistInitialState,
   reducer: todolistReducer
 };
@@ -156,42 +163,40 @@ export default storeList;
 /* middlewares.js */
 
 // 第一个 middleware：
+// 用来打印日志
+const actionLog = ({ next, action, state }) => {
+  console.log("发出 action：", action);
+  console.log("当前数据状态是：", state);
+
+  next(action);
+};
+
+// 第二个 middleware：
 // 用来拦截 API 请求
 const apiFetch = async ({ next, action }) => {
   // 如果 action 里面有 api 字段，则表示需要请求服务端数据作为 payload
   if (action.api) {
     // 数据请求前，全局通知进入 loading 状态
-    next({ type: 'LOADING_START' });
+    next({ type: "LOADING_START" });
 
     const serverResponse = await fetch(api.url, {
       method: api.method,
-      ...(api.option)
+      ...api.option
     });
 
     // 数据请求后，关闭全局通知 loading 状态
-    next({ type: 'LOADING_STOP' });
+    next({ type: "LOADING_STOP" });
 
     const nextAction = {
       ...action,
       payload: action.payload || serverResponse.data
     };
 
-    delete nextAction.api;
-
     // 以新的数据触发一下个 action
     next(nextAction);
   } else {
     next(action);
   }
-};
-
-// 第二个 middleware：
-// 用来打印日志
-const actionLog = ({ next, action, state }) => {
-  console.log('发出 action：', action);
-  console.log('当前数据状态是：', state);
-
-  next(action);
 };
 
 const middlewares = [actionLog, apiFetch];
@@ -207,7 +212,7 @@ export default middlewares;
 import React from "react";
 import { useStore, useDispatch } from "hooks-store";
 
-const Loading = () => {
+const GlobalLoading = () => {
   // 使用 useStore 方法得到对应的 state 数据
   const { loading } = useStore("notice");
 
@@ -220,25 +225,17 @@ const TodoList = () => {
   const todoList = useStore("todolist");
 
   React.useEffect(() => {
-    // 组件挂载的时候开始请求数据
     dispatch({
       type: "TODOLIST_INIT",
       api: {
         url: "/todolist"
       }
     });
-
-    return () => {
-      // 组件卸载的时候清空数据
-      dispatch({
-        type: "TODOLIST_CLEAR"
-      });
-    };
   }, []);
 
-  const handleDelete = (todo) => () => {
+  const handleDelete = todo => () => {
     dispatch({
-      type: 'TODOLIST_DELETE',
+      type: "TODOLIST_DELETE",
       payload: todo
     });
   };
@@ -246,7 +243,9 @@ const TodoList = () => {
   return (
     <ul>
       {todoList.data.map(todo => (
-        <li key={todo.id} onClick={handleDelete(todo)}>{todo.text}</li>
+        <li key={todo.id} onClick={handleDelete(todo)}>
+          {todo.text}
+        </li>
       ))}
     </ul>
   );
@@ -254,8 +253,8 @@ const TodoList = () => {
 
 const App = () => (
   <>
-    <Loading />
     <TodoList />
+    <GlobalLoading />
   </>
 );
 
@@ -273,11 +272,12 @@ export default App;
 
 ### Provider
 
-Provider 作为整个 APP 的父元素。  
-注：如果是 typescript 项目，需要传递开发者自定义的 State, Action 范形。
+Provider 作为整个 APP 的父元素
 
 ```typescript
-const Provider: <State, Action>(props: ProviderProps<State, Action>) => JSX.Element
+const Provider: <State, Action>(
+  props: ProviderProps<State, Action>
+) => JSX.Element;
 ```
 
 - ProviderProps
@@ -294,7 +294,8 @@ interface ProviderProps<State, Action> {
 
 - Store
 
-每一个 store 作为一个数据仓库，包含：  
+每一个 store 作为一个数据仓库，包含：
+
 1. name「唯一的名称」
 2. initialState「初始化数据，可以是任何非 false 类型」
 3. reducer「数据出处理中心」
@@ -317,7 +318,11 @@ interface Store<State, Action> {
 3. state：全局 store 的数据。注：是所有 store 的数据，而不是某一个 store 的数据，因此可以在中间件中根据全局 store 作出逻辑判断，再进行下一步操作
 
 ```typescript
-type Middleware<Action> = ({ next, action, state }: {
+type Middleware<Action> = ({
+  next,
+  action,
+  state
+}: {
   next: React.Dispatch<Action>;
   action: Action;
   state?: StoreData;
@@ -331,7 +336,10 @@ Reducer 作为数据处理器，接收 state「当前 store 的数据」、actio
 注意：这里的 Reducer 和 Redux 的 reducer 不一样：如果 state 没有修改，则不需要返回原来的 state，或者返回 undeinfed。
 
 ```typescript
-type Reducer<State, Action> = (state: State, action: Action) => State | undefined;
+type Reducer<State, Action> = (
+  state: State,
+  action: Action
+) => State | undefined;
 ```
 
 ### useDispatch
@@ -393,13 +401,11 @@ interface IApi {
   url: string;
 }
 
-type ActionOne =
-  | { type: 'LOADING_START' }
-  | { type: 'LOADING_STOP' };
+type ActionOne = { type: "LOADING_START" } | { type: "LOADING_STOP" };
 
 type ActionTwo =
-  | { type: 'TODOLIST_INIT'; payload?: DataItem[]; api?: IApi }
-  | { type: 'TODOLIST_CLEAR' };
+  | { type: "TODOLIST_INIT"; payload?: DataItem[]; api?: IApi }
+  | { type: "TODOLIST_CLEAR" };
 
 // 最终范形 Action 可以是多个 action 类型的整合
 export type Action = ActionOne | ActionTwo;
